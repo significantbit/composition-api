@@ -77,7 +77,9 @@ export const useStatic = <T>(
   param: Ref<string> = ref(''),
   keyBase: string
 ): Ref<T | null> => {
-  const key = computed(() => `${keyBase}-${param.value}`)
+  const key = computed(
+    () => `${keyBase}-${param.value.replace(/[^a-z0-9]/gi, '_')}`
+  )
   const result = ssrRef<T | null>(null, key.value)
 
   if (result.value) staticCache[key.value] = result.value
